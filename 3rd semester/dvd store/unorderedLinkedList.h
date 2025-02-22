@@ -1,0 +1,132 @@
+#pragma once
+#include "linkedListType.h"
+#include "unorderedLinkedList.h"
+
+#include<iostream>
+
+using namespace std;
+
+
+
+template <class Type>
+class unorderedLinkedList : public linkedListType<Type>
+{
+	
+public:
+
+
+	 bool search( Type& searchItem) 
+	{
+		
+		bool found = false;
+
+		while (this->current != nullptr && !found)
+		{
+			if (this->current->info == searchItem) {
+				found = true;
+			}
+			else
+			{
+				this->current = this->current->link;
+
+			}
+
+		}
+		return found;
+	}
+
+	
+	 void insertFirst(const Type& newItem)
+	 {
+
+
+		 nodeType<Type>* newNode = new nodeType<Type>;
+		 newNode->info = newItem;
+		 newNode->link = this->first; //insert newNode before first
+		 this->first = newNode; //make first point to the
+		 //actual first node
+		 this->count++; //increment count
+		 if (this->last == nullptr) //if the list was empty, newNode is also
+			 this->last = newNode;
+	 }
+	 void insertLast(const Type& newItem)
+	 {
+		 nodeType<Type>* newNode; //pointer to create the new node
+		 newNode = new nodeType<Type>; //create the new node
+		 newNode->info = newItem; //store the new item in the node
+		 newNode->link = nullptr; //set the link field of newNode
+		 //to nullptr
+		 if (this->first == nullptr) //if the list is empty, newNode is
+			 //both the first and last node
+		 {
+			 this->first = newNode;
+			 this->last = newNode;
+			 this->count++; //increment count
+		 }
+		 else //the list is not empty, insert newNode after last
+		 {
+			 this->last->link = newNode; //insert newNode after last
+			 this->last = newNode; //make last point to the actual
+			 //last node in the list
+			 this->count++; //increment count
+		 }
+	 }//end insertLast
+
+	 
+	 void deleteNode(const Type& deleteItem)
+	 {
+		 nodeType<Type>* current; //pointer to traverse the list
+		 nodeType<Type>* trailCurrent; //pointer just before current
+		 bool found;
+
+		 if (this->first == nullptr) //Case 1; the list is empty.
+			 cout << "Cannot delete from an empty list."
+			 << endl;
+		 else
+		 {
+			 if (this->first->info == deleteItem) //Case 2
+			 {
+				 current = this->first;
+				 this->first = this->first->link;
+				 this->count--;
+				 if (this->first == nullptr) //the list has only one node
+					 this->last = nullptr;
+				 delete current;
+			 }
+			 else //search the list for the node with the given info
+			 {
+				 found = false;
+				 trailCurrent = this->first; //set trailCurrent to point
+				 //to the first node
+				 current = this->first->link; //set current to point to
+				 //the second node
+				 while (current != nullptr && !found)
+				 {
+					 if (current->info != deleteItem)
+					 {
+						 trailCurrent = current;
+						 current = current->link;
+					 }
+					 else
+						 found = true;
+				 }//end while
+				 if (found) //Case 3; if found, delete the node
+				 {
+					 trailCurrent->link = current->link;
+					 this->count--;
+					 if (this->last == current) //node to be deleted
+						 //was the last node
+						 this->last = trailCurrent; //update the value
+					 //of last
+					 delete current; //delete the node from the list
+				 }
+				 else
+					 cout << "The item to be deleted is not in "
+					 << "the list." << endl;
+			 }//end else
+		 }//end else
+	 }//end deleteNode
+
+};
+
+
