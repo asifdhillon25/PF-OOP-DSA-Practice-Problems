@@ -1,0 +1,55 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+
+class P
+{
+	public:
+	int location=2;
+	int loco=4;
+};
+
+class B
+{
+	
+	public:
+		P *obj;
+		
+		P *obj2=new P;
+		
+		B(P *p)
+		{
+			obj=p;
+		}
+		
+		
+		void showPlayer1Location1()
+		{
+			cout<<obj->location<<endl;
+			cout<<obj->loco<<endl;
+		}
+		
+//			void showPlayer2Location2()
+//	                 	{
+//			cout<<obj2->location<<endl;
+//		}
+};
+
+int main()
+{
+
+P obj1;
+
+//P *ptr=&obj1;
+
+B bobj(&obj1);
+
+cout<<"Player loc   "<<obj1.location<<endl;
+//obj1.location=6;
+cout<<"Player loc from bullet  ";bobj.showPlayer1Location1();
+
+//cout<<2<<"   "<<'2';
+
+}
